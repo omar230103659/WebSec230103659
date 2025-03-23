@@ -20,8 +20,21 @@
  <a class="nav-link" href="./transcript">Transcript</a>
  </li>
  <li class="nav-item">
+ <a class="nav-link" href="{{ url('/products') }}">Products</a>
+ </li>
+ <li class="nav-item">
+ <a class="nav-link {{ Request::is('calculator') ? 'active' : '' }}" href="{{ url('/calculator') }}">Calculator</a>
+ </li>
+ <li class="nav-item">
+ <a class="nav-link" href="{{ url('/calculate-gpa') }}">Calculate GPA</a>
+ </li>
+ <li class="nav-item">
                 <a class="nav-link" href="{{ url('/users') }}">Users</a>
             </li>
+ <li class="nav-item">
+        <a class="nav-link" href="{{ route('grades.index') }}">Grades</a>
+    </li>
+ </ul>           
  </ul>
  </div>
 </nav>
