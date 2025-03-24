@@ -29,6 +29,9 @@
  <a class="nav-link" href="{{ url('/calculate-gpa') }}">Calculate GPA</a>
  </li>
  <li class="nav-item">
+    <a class="nav-link" href="{{ route('profile.purchases') }}">My Purchases</a>
+ </li>
+ <li class="nav-item">
                 <a class="nav-link" href="{{ url('/users') }}">Users</a>
             </li>
  <li class="nav-item">

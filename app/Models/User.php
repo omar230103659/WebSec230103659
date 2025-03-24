@@ -28,6 +28,17 @@ class User extends Authenticatable
     {
         return in_array($permission, $this->permissions ?? []);
     }
+    public function purchases()
+{
+    return $this->hasMany(\App\Models\Purchase::class);
 }
+
+    public function boughtProducts()
+{
+    return $this->belongsToMany(\App\Models\Product::class, 'purchases');
+}
+
+}
+
 
 

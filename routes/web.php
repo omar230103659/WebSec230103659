@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 
 // ✅ الصفحات العامة المفتوحة للجميع
@@ -51,14 +52,10 @@ Route::get('/transcript', function () {
     return view('transcript', compact('student'));
 });
 
-Route::get('/products', function () {
-    $products = [
-        ['name' => 'Laptop', 'image' => 'images/laptop.jpg', 'price' => 1200, 'description' => 'Powerful laptop'],
-        ['name' => 'Phone', 'image' => 'images/phone.jpg', 'price' => 800, 'description' => 'Latest smartphone'],
-        ['name' => 'Headphones', 'image' => 'images/headphones.jpg', 'price' => 150, 'description' => 'Noise cancelling headphones'],
-    ];
-    return view('products', compact('products'));
-});
+// ❌ تم حذف هذا الروت لأنه بيتعارض مع الـ resource route
+// Route::get('/products', function () {
+//     ...
+// });
 
 Route::get('/calculator', function () {
     return view('calculator');
@@ -72,6 +69,12 @@ Route::get('/calculate-gpa', function () {
     ];
     return view('calculate-gpa', compact('courses'));
 });
+
+// ✅ الموظف فقط يقدر يدخل على إدارة المنتجات
+Route::middleware(['auth', 'employee'])->group(function () {
+    Route::resource('products', ProductController::class);
+});
+Route::post('/products/{product}/buy', [ProductController::class, 'buy'])->name('products.buy');
 
 // ✅ صفحات تتطلب تسجيل الدخول
 Route::middleware(['auth'])->group(function () {
@@ -99,6 +102,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('users', UserController::class)->except(['index', 'show']);
     Route::resource('roles', RoleController::class);
 });
+Route::get('/my-purchases', function () {
+    $products = Auth::user()->boughtProducts;
+    return view('profile.purchases', compact('products'));
+})->middleware('auth')->name('profile.purchases');
+
 
 // ✅ تسجيل الدخول والتسجيل
 Auth::routes();

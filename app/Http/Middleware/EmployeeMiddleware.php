@@ -10,10 +10,10 @@ class EmployeeMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check() || Auth::user()->role !== 'employee') {
-            abort(403, 'Unauthorized access.');
+        if (Auth::check() && Auth::user()->role === 'Employee') {
+            return $next($request);
         }
 
-        return $next($request);
+        return redirect('/')->with('error', 'Unauthorized');
     }
 }
